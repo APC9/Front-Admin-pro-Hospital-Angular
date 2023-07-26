@@ -1,0 +1,103 @@
+<div class="row animate fadeIn fast">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+
+            <input 
+              (keyup)="searchUserByTerm(txtTerm.value)"
+              type="text"   
+              class="form-control" 
+              placeholder="Buscar usuario..." 
+              #txtTerm />
+
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="row animate fadeIn fast" *ngIf="total === 0">
+  <div class="col-12">
+      <div class="alert alert-info text-center" >
+        <h4 class="alert-heading"> Cargando...</h4>
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+        <p class="mb-0" >Por favor espere</p>
+      </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="total !== 0">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Usuarios</h4>
+            <h6 class="card-subtitle">Usuarios registrados en la aplicacion: {{ !users ? '0' : total }} de {{ !users ? '0' : nroUsers }}</h6>
+            <div class="table-responsive" *ngFor="let user of users">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="w100" >Avatar</th>
+                            <th>Correos</th>
+                            <th>Nombre</th>
+                            <th class="w140">Role</th>
+                            <th class="w100">Auth</th>
+                            <th class="text-nowrap w100">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> 
+                              <img 
+                                (click)="openModal( user )" 
+                                [src]="user.img | imgPipe" 
+                                [alt]="user.name" 
+                                style="max-width: 100%; max-height: 100%; cursor:pointer" /> 
+                            </td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.name}}</td>
+                            <td>
+                              <select class="form-control"
+                                    [(ngModel)]="user.roles" 
+                                    (change)="changeRoles(user)"
+                                    >
+
+                                <option value='admin'>Admin</option>
+                                <option value='user'>User</option>
+                              </select>
+                            </td>
+
+                            <td>
+                              <span *ngIf="user.google" class="label label-danger">Google</span>
+                              <span *ngIf="!user.google" class="label label-info">Email</span>
+                            </td>
+
+                            <td class="text-nowrap text-center">
+
+                                <a 
+                                  style="cursor: pointer"
+                                  data-toggle="tooltip" data-original-title="Borrar" 
+                                  (click)="delete( user )"> 
+                                  <i class="fa fa-close text-danger"></i> 
+                                </a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div 
+              *ngIf="txtTerm.value.length === 0"
+              style="display: flex; justify-content: space-between">
+
+              <button class="btn btn-secondary"
+              (click)="prev()">Anteriores</button>
+
+              <button
+                [disabled]="users.length === total"
+                class="btn btn-secondary"
+                (click)="next()" >Siguientes</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

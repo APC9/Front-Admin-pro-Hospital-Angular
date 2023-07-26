@@ -1,0 +1,115 @@
+<div class="row animate fadeIn fast">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+
+            <input 
+              (keyup)="searchHospitalByTerm(txtTerm.value)"
+              type="text" 
+              class="form-control" 
+              placeholder="Buscar hospitales..." 
+              #txtTerm/>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="row animate fadeIn fast" *ngIf="loading">
+  <div class="col-12">
+      <div class="alert alert-info text-center" >
+        <h4 class="alert-heading"> Cargando...</h4>
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+        <p class="mb-0" >Por favor espere</p>
+      </div>
+  </div>
+</div>
+
+<div class="row animate fadeIn fast" *ngIf="error">
+  <div class="col-12">
+      <div class="alert alert-danger text-center" >
+        <h4 class="alert-heading"> Error!!</h4>
+        <i class="fa fa-exclamation-triangle" ></i>
+        <p class="mb-0" >{{ error }}</p>
+      </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!loading && !error" >
+  <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-8">
+              <h4 class="card-title">Hospitales</h4>
+              <h6 class="card-subtitle">Hospitales registrados en la aplicacion: {{ total }}</h6>
+            </div>
+
+            <div class="col">
+              <div class="text-right">
+                <button class="btn btn-primary" (click)="openSweetAlert()">
+                  <i class="fa fa-hospital-o"></i>
+                    Crear hospital
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+            <div class="table-responsive" *ngFor="let hospital of hospitales">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-nowrap text-center w100" >Foto</th>
+                            <th class="text-nowrap text-center " >Nombre</th>
+                            <th class="text-nowrap text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                              <img
+                                (click)="openModal( hospital )"
+                                style="max-width: 100%; max-height: 100%; cursor:pointer"
+                                [src]="hospital?.img | imgPipe "
+                                [alt]="hospital.name" />
+                            </td>
+                            <td>
+                              <input 
+                                [(ngModel)]="hospital.name"
+                                type="text" 
+                                [placeholder]="hospital.name" 
+                                class="form-control"/>
+                            </td>
+                            <td class="text-nowrap text-center" >
+                              
+                                <a
+                                  (click)="saveChanges(hospital)"
+                                  style="cursor: pointer;"
+                                  data-toggle="tooltip" 
+                                  data-original-title="Editar">
+                                  <i class="fa fa-save text-inverse m-r-10"></i>
+                                </a>
+
+                                <a 
+                                  (click)="deleteHospital(hospital)"
+                                  style="cursor: pointer;"
+                                  data-toggle="tooltip" 
+                                  data-original-title="Borrar">
+                                  <i class="fa fa-close text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display: flex; justify-content: space-between">
+              <button class="btn btn-secondary">Siguientes</button>
+              <button class="btn btn-secondary">Anteriores</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

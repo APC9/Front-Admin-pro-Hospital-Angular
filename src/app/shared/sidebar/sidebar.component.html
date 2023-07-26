@@ -1,0 +1,66 @@
+<!-- ============================================================== -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar">
+  <!-- Sidebar scroll-->
+  <div class="scroll-sidebar">
+      <!-- Sidebar navigation-->
+      <nav class="sidebar-nav">
+          <ul id="sidebarnav">
+              <li class="user-profile">
+                  
+                  <a (click)="togleExpandedName()"
+                    class="has-arrow waves-effect waves-dark" 
+                    [attr.aria-expanded]="expanded ? 'true' : 'false'">
+                      <img [src]="user?.imagenUser" alt="user" />
+                      <span class="hide-menu">{{ user?.name }}</span>
+                  </a>
+
+
+                  <ul [attr.aria-expanded]="expanded ? 'true' : 'false'" 
+                    [class]="expanded ? 'collapse in' : 'collapse'">
+
+                      <li><a routerLinkActive="active" routerLink="perfil" style="cursor: pointer">My Profile </a></li>
+                      <li><a href="javascript:void()">My Balance</a></li>
+                      <li><a href="javascript:void()">Inbox</a></li>
+                      <li><a routerLink="account-settings">Account Setting</a></li>
+                      <li><a (click)="logout()" style="cursor: pointer" >Logout</a></li>
+                  </ul>
+              </li>
+              <li class="nav-devider"></li>
+              <li class="nav-small-cap">PERSONAL</li>
+
+              <li *ngFor="let item of sidebarService.menu">
+                  <a (click)="togleExpandedDashboard( item.titulo )"
+                    class="has-arrow waves-effect waves-dark" 
+                    [attr.aria-expanded]="item.expanded ? 'true' : 'false'">
+
+                      <i [class]="item.icono"></i>
+                      <span class="hide-menu">
+                          {{ item.titulo }}
+                          <span class="label label-rouded label-themecolor pull-right">
+                              {{ item.submenu.length }}
+                          </span>
+                      </span>
+                  </a>
+
+                  <ul [attr.aria-expanded]="expanded ? 'true' : 'false'"  
+                  [class]="item.expanded ? 'collapse in' : 'collapse'">
+                  
+                      <li *ngFor="let subMenuItem of item.submenu">
+                          <a [routerLink]="subMenuItem.url"
+                             routerLinkActive="active"
+                             [routerLinkActiveOptions]="{ exact: true }"> {{ subMenuItem.titulo }} </a>
+                      </li>
+                  </ul>
+              </li>
+
+          </ul>
+      </nav>
+      <!-- End Sidebar navigation -->
+  </div>
+  <!-- End Sidebar scroll-->
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
